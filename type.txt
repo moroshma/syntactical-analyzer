@@ -1,0 +1,23 @@
+char
+unsigned char
+signed char
+int
+unsigned int
+signed int
+short int
+unsigned short int
+signed short int
+long int
+signed long int
+unsigned long int
+float
+double
+long double
+wchar_t
+bool
+char
+int
+float
+double
+void
+wchar_t
