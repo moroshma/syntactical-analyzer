@@ -16,10 +16,13 @@ private:
   set<string> baseTypeSet;
   string newType;
   int inputBaseType();
+  size_t checkConst(string line, string nameClass);
 
   size_t starLineType = 0;
   size_t endLineType = 0;
   size_t countConstructor = 0;
+
+
 
 public:
   int findType(size_t start, string file);
@@ -71,13 +74,16 @@ int dataClass::findType(size_t start, string file) {
       }
 
       string s = line;
+
       string delimiterSpace = " ";
       string delimiterBracket = "{";
+
       size_t pos = 0;
       string token;
 
-      while ((pos = s.find(delimiterSpace)) != string::npos ||
-             (pos = s.find(delimiterBracket)) != string::npos) {
+      while (!newType.length() && ((pos = s.find(delimiterSpace)) != string::npos ||
+             (pos = s.find(delimiterBracket)) != string::npos)) {
+
         token = s.substr(0, pos);
         if (!flag && "class" == token) {
           flag = true;
@@ -89,12 +95,51 @@ int dataClass::findType(size_t start, string file) {
         }
         s.erase(0, pos + delimiterSpace.length() );
       }
+        if (newType.length()) {
+            size_t countConst = checkConst(line, this -> newType);
+            cout << countConst << endl;
+
+        }
     }
+
+
+
     free(line);
   } else {
     ret = OPEN_FILE_ERROR;
   }
   return ret;
+}
+
+size_t dataClass::checkConst(string line, string nameClass) {
+    string s = line;
+
+
+
+
+    string delimiterSpace = " ";
+    string delimiterBracket = "\n";
+    string delimiterCBracket = "(";
+
+    size_t pos = 0;
+    string token;
+    size_t countConst = 0;
+
+    while ((pos = s.find(delimiterSpace)) != string::npos ||
+
+                                 (pos = s.find(delimiterBracket)) != string::npos ||
+                                 (pos = s.find(delimiterCBracket)) != string::npos   ) {
+
+        token = s.substr(0, pos);
+        if (nameClass == token) {
+            countConst++;
+        }
+
+
+        s.erase(0, pos + delimiterSpace.length() );
+    }
+
+    return countConst;
 }
 
 int main() {
