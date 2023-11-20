@@ -5,10 +5,6 @@
 #ifndef SYNTACTICAL_ANALYZER_PARSER_H
 #define SYNTACTICAL_ANALYZER_PARSER_H
 
+class parser {};
 
-class parser {
-
-};
-
-
-#endif //SYNTACTICAL_ANALYZER_PARSER_H
+#endif // SYNTACTICAL_ANALYZER_PARSER_H
