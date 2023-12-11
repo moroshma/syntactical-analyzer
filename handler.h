@@ -33,12 +33,12 @@ private:
     string newType;
     int inputBaseType();
 
-    void check_in_class(string line);
-    void check_out_class(string line);
+    void check_in_class(const string& line);
+    void check_out_class(const string& line);
 
-    string trim(const std::string &str, const std::string &chars);
-    size_t checkConst(string line, string nameClass);
-    void checkValid(string line, size_t countConst);
+    static string trim(const std::string &str, const std::string &chars);
+    static size_t checkConst(string line, const string& nameClass);
+    void checkValid(const string& line, size_t countConst);
 
     size_t starLineType = 0;
     size_t endLineType = 0;
@@ -48,10 +48,10 @@ private:
 
 public:
 
-    void print_error(string line, size_t current_line, error err);
-    int findType(size_t start, string file);
+    void print_error(const string& line, size_t current_line, error err);
+    int findType(const string &file);
     dataClass() { inputBaseType(); }
-    string addSpaceInStr(string str);
+    static string addSpaceInStr(string str);
 };
 
 

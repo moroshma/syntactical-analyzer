@@ -3,14 +3,15 @@
 //
 #include "handler.h"
 
+#include <utility>
+
 int dataClass::inputBaseType() {
   int ret = SUCCESS;
   FILE *fs = fopen("type", "r");
-  char *line = NULL;
-  ssize_t read;
+  char *line = nullptr;
   size_t len = 0;
-  if (NULL != fs) {
-    while ((read = getline(&line, &len, fs)) != -1) {
+  if (nullptr != fs) {
+    while ((getline(&line, &len, fs)) != -1) {
       size_t lenLine = strlen(line);
       if (line[lenLine - 1] == '\n') {
         line[lenLine - 1] = '\0';
@@ -24,23 +25,21 @@ int dataClass::inputBaseType() {
   return ret;
 }
 
-int dataClass::findType(size_t start, string file) {
+int dataClass::findType(const string &file) {
   int ret = SUCCESS;
 
   FILE *fs = fopen(file.c_str(), "r");
-  char *line = NULL;
-  ssize_t read;
+  char *line = nullptr;
   size_t len = 0;
 
-  if (NULL == fs) {
+  if (nullptr == fs) {
     print_error("", 0, OPEN_FILE_ERROR);
     ret = OPEN_FILE_ERROR;
   } else {
 
     bool flag = false;
-    size_t countBrecket = 0;
     bool findet_end_type = false;
-    while ((read = getline(&line, &len, fs)) != -1) {
+    while ((getline(&line, &len, fs)) != -1) {
       if (line[strlen(line) - 1] == '\n') {
         line[strlen(line) - 1] = '\0';
       }
@@ -49,13 +48,13 @@ int dataClass::findType(size_t start, string file) {
       s = addSpaceInStr(s);
       string delimiterSpace = " ";
       string delimiterBracket = "{";
-      size_t pos = 0;
+      size_t pos;
       string token;
 
       this->count_breakets += count(s.begin(), s.end(), '{');
       this->count_breakets -= count(s.begin(), s.end(), '}');
 
-      while (!newType.length() &&
+      while (newType.empty() &&
              ((pos = s.find(delimiterSpace)) != string::npos ||
               (pos = s.find(delimiterBracket)) != string::npos)) {
         token = s.substr(0, pos);
@@ -93,14 +92,14 @@ int dataClass::findType(size_t start, string file) {
   return ret;
 }
 
-size_t dataClass::checkConst(string line, string nameClass) {
-  string s = line;
+size_t dataClass::checkConst(string line, const string& nameClass) {
+  string s = std::move(line);
 
   string delimiterSpace = " ";
   string delimiterBracket = "\n";
   string delimiterCBracket = "(";
 
-  size_t pos = 0;
+  size_t pos;
   string token;
   size_t countConst = 0;
 
@@ -118,7 +117,7 @@ size_t dataClass::checkConst(string line, string nameClass) {
 }
 
 string dataClass::addSpaceInStr(string str) {
-  string newSt = "";
+  string newSt;
   for (size_t i = 0; i < str.length(); i++) {
     if ('\n' == str[i] || '(' == str[i] || ')' == str[i] || '{' == str[i] ||
         '}' == str[i]) {
@@ -132,9 +131,9 @@ string dataClass::addSpaceInStr(string str) {
   return newSt;
 }
 
-void dataClass::checkValid(string line, size_t countConst) {
+void dataClass::checkValid(const string& line, size_t countConst) {
 
-  size_t findet_open_bracket = line.find("(");
+  size_t findet_open_bracket = line.find('(');
   size_t findet_vision_bracket = line.find("::");
 
   if (string::npos == findet_open_bracket &&
@@ -154,20 +153,18 @@ void dataClass::checkValid(string line, size_t countConst) {
   }
 }
 
-void dataClass::check_in_class(string line) {
-  size_t pos = 0;
+void dataClass::check_in_class(const string& line) {
+  size_t pos;
   string token;
-  string s = line.substr(line.find("(") + 1);
+  string s = line.substr(line.find('(') + 1);
 
   set<string> name_var;
 
-  for (auto ik = baseTypeSet.begin(); ik != baseTypeSet.end(); ++ik) {
-    string delim = *ik;
+  for (const auto& delim : baseTypeSet) {
     pos = s.find(delim);
     if (pos != string::npos) {
-      token = s.substr(0, pos);
       s.erase(0, pos + delim.length());
-      size_t end_init = min(s.find(")"), s.find(","));
+      size_t end_init = min(s.find(')'), s.find(','));
 
       string new_var = trim(s.substr(0, end_init), " ,){");
 
@@ -210,21 +207,19 @@ void dataClass::check_in_class(string line) {
   }
 }
 
-void dataClass::check_out_class(string line) {
+void dataClass::check_out_class(const string& line) {
 
-  size_t pos = 0;
+  size_t pos;
   string token;
 
-  string s = line.substr(line.find("(") + 1);
+  string s = line.substr(line.find('(') + 1);
   set<string> name_var;
-  for (auto ik = baseTypeSet.begin(); ik != baseTypeSet.end(); ++ik) {
-    string delim = *ik;
+  for (const auto& delim : baseTypeSet) {
     pos = s.find(delim);
     if (pos != string::npos) {
-      token = s.substr(0, pos);
-      s.erase(0, pos + delim.length());
-      size_t end_init = min(s.find(")"), s.find(","));
 
+      s.erase(0, pos + delim.length());
+      size_t end_init = min(s.find(')'), s.find(','));
       string new_var = trim(s.substr(0, end_init), " ,){");
 
       if (new_var.empty()) {
@@ -266,7 +261,7 @@ void dataClass::check_out_class(string line) {
   }
 }
 
-void dataClass::print_error(string line, size_t current_line, error err) {
+void dataClass::print_error(const string& line, size_t current_line, error err) {
   switch (err) {
   case INVALID_BRACETS_VISION:
     cout << "In line: " << current_line + 1
@@ -275,12 +270,11 @@ void dataClass::print_error(string line, size_t current_line, error err) {
   case INVALID_VARIBLE_INIT:
     cout << "INVALID VARIABLE INIT (☞ ͡° ͜ʖ ͡°)☞ line: " << line << endl;
     break;
-
   case MALLOC_ERROR:
     cout << "Memory error ＼(￣▽￣)／" << endl;
     break;
   case UNDEFIND_ERROR:
-    cout << "Undefined  error (╯°益°)╯彡┻━┻ LINE: " << current_line + 1
+    cout << "Undefined  error ¯\\_(ツ)_/¯ LINE: " << current_line + 1
          << " string: " << line << endl;
     break;
   case MANY_CONST:
@@ -323,7 +317,7 @@ int main(int argc, char **argv) {
   if (argc != 2) {
     dc.print_error("", 0, OPEN_FILE_ERROR);
   } else {
-    dc.findType(0, argv[1]);
+      dc.findType(argv[1]);
   }
 
   return 0;
