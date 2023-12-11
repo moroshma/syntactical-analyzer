@@ -10,3 +10,8 @@ add_executable(syntactical_analyzer
         handler.h
         parser.cpp
         parser.h)
+
+
+add_executable(test
+        parser.cpp
+        )

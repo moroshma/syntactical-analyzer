@@ -1,3 +1,4 @@
 /home/moroshma/syntactical-analyzer/cmake-build-debug/CMakeFiles/syntactical_analyzer.dir
+/home/moroshma/syntactical-analyzer/cmake-build-debug/CMakeFiles/test.dir
 /home/moroshma/syntactical-analyzer/cmake-build-debug/CMakeFiles/edit_cache.dir
 /home/moroshma/syntactical-analyzer/cmake-build-debug/CMakeFiles/rebuild_cache.dir
