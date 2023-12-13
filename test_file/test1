@@ -2,10 +2,10 @@
 class test_class {
 
    int a;
+   test_class int a1) : a{a1} {
 
-    test_class int a1) : a{a1} {
-    }
+   }
+
 }
-
 
 //INVALID_BRACETS_VISION

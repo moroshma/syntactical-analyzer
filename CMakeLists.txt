@@ -9,7 +9,7 @@ add_executable(syntactical_analyzer
         handler.cpp
         handler.hpp
         parser.cpp
-        parser.hpp)
+)
 
 
 add_executable(test
