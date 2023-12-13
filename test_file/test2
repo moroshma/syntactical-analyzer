@@ -1,0 +1,11 @@
+
+class test_class {
+
+   int a;
+    test_class (non_valid_var a1) {
+    }
+}
+
+
+
+//INVALID_VARIBLE_INIT

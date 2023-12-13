@@ -1,0 +1,14 @@
+
+
+
+
+class test_class {
+
+   int a;
+    test_class   (int a1) : a{a1} {
+    }
+}
+
+
+
+//normal_mod

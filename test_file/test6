@@ -1,0 +1,13 @@
+
+
+
+class test_class {
+
+   int a;
+   test_class  (int a1);
+}
+
+test_class::test_class(int a1) {
+
+
+}

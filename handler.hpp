@@ -1,9 +1,7 @@
-//
-// Created by moroshma on 11.11.23.
-//
 
-#ifndef SYNTACTICAL_ANALYZER_HANDLER_H
-#define SYNTACTICAL_ANALYZER_HANDLER_H
+
+#ifndef SYNTACTICAL_ANALYZER_HANDLER_HPP
+#define SYNTACTICAL_ANALYZER_HANDLER_HPP
 
 
 #include <algorithm>
@@ -55,4 +53,4 @@ public:
 };
 
 
-#endif // SYNTACTICAL_ANALYZER_HANDLER_H
+#endif // SYNTACTICAL_ANALYZER_HANDLER_HPP

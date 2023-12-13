@@ -7,9 +7,9 @@ include_directories(.)
 
 add_executable(syntactical_analyzer
         handler.cpp
-        handler.h
+        handler.hpp
         parser.cpp
-        parser.h)
+        parser.hpp)
 
 
 add_executable(test

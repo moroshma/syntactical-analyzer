@@ -1,0 +1,14 @@
+
+
+
+class test_class {
+
+   int a;
+
+    test_class  (int a1) : a{NON_VALID_TYPE} {
+    }
+}
+
+
+
+//INITIALIZATION_LIST_ERROR
