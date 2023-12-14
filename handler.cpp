@@ -95,6 +95,53 @@ int dataClass::findType(const string &file) {
     return ret;
 }
 
+int dataClass::valid_brackets(const string &line, size_t* num_str) {
+    FILE * fs = fopen(line.c_str(), "r");
+    int ret;
+    if (!fs) {
+    ret = OPEN_FILE_ERROR;
+    } else {
+        ret = is_valid_bracket(fs, num_str);
+        fclose(fs);
+    }
+
+    if (true == ret){
+        ret = SUCCESS;
+    } else if (false == ret){
+        ret = INVALID_BRACETS_VISION;
+    }
+
+    return ret;
+
+}
+
+bool dataClass::is_valid_bracket(FILE *fs, size_t * line) {
+    std::stack<char> stack;
+
+    for (int bracket = fgetc(fs); bracket != EOF; bracket = fgetc(fs)) {
+
+        if (bracket == '(' || bracket == '[' || bracket == '{' || bracket == ')' || bracket == ']'  || bracket == '}' ) {
+            if (bracket == '(' || bracket == '[' || bracket == '{') {
+                stack.push(bracket);
+            } else {
+                if (stack.empty()) {
+                    return false;
+                }
+                char top = stack.top();
+                if ((bracket == ')' && top == '(') || (bracket == ']' && top == '[') ||
+                    (bracket == '}' && top == '{')) {
+                    stack.pop();
+                } else {
+                    return false;
+                }
+            }
+        }
+        if (bracket == '\n') {
+            (*line)++;
+        }
+    }
+    return stack.empty();
+}
 
 
 int main(int argc, char **argv) {
@@ -103,7 +150,12 @@ int main(int argc, char **argv) {
     dc.print_error("", 0, OPEN_FILE_ERROR);
 
   } else {
-    dc.findType(argv[1]);
+    size_t line = 0;
+     if(dc.valid_brackets(argv[1], &line) != SUCCESS) {
+         dc.print_error("", line, INVALID_BRACETS_VISION);
+     } else {
+         dc.findType(argv[1]);
+     }
   }
 
   return 0;

@@ -36,7 +36,8 @@ private:
 
     static string trim(const std::string &str, const std::string &chars);
     static size_t checkConst(string line, const string& nameClass);
-    void checkValid(const string& line, size_t countConst);
+
+
 
     size_t starLineType = 0;
     size_t endLineType = 0;
@@ -45,7 +46,9 @@ private:
     long int count_breakets = 0;
 
 public:
-
+    int valid_brackets(const string &line, size_t* num_str);
+    static bool is_valid_bracket(FILE *fs, size_t * line);
+    void checkValid(const string& line, size_t countConst);
     void print_error(const string& line, size_t current_line, error err);
     int findType(const string &file);
     dataClass() { inputBaseType(); }
@@ -54,3 +57,5 @@ public:
 
 
 #endif // SYNTACTICAL_ANALYZER_HANDLER_HPP
+
+
