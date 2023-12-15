@@ -73,12 +73,19 @@ void dataClass::check_in_class(const string &line) {
 
     bool trigger_args = false;
 
-    for (auto ik = baseTypeSet.begin(); ik != baseTypeSet.end(); ++ik) {
-        string delim = *ik;
-        pos = s.find(delim);
+    while (trim(s," ") != "" && trim(s," ").find(':') != 0){
+
+        pos = min(s.find(')'), s.find(','));
+
         if (pos != string::npos) {
-            token = s.substr(0, pos);
-            s.erase(0, pos + delim.length());
+            s = trim(s, " ");
+            size_t space_index = s.find(' ');
+            if (space_index!= string::npos && baseTypeSet.count(s.substr(0, space_index))){
+                s.erase(0,  s.find(' '));
+            } else {
+                print_error(line, this->current_line, INVALID_VARIBLE_INIT);
+                return;
+            }
 
             size_t end_init = min(s.find(")"), s.find(","));
             string new_var = trim(s.substr(0, end_init), " ,){");
