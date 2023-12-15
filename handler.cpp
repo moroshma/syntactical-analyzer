@@ -45,7 +45,7 @@ int dataClass::findType(const string &file) {
             s = addSpaceInStr(s);
 
             string delimiterSpace = " ";
-            string delimiterBracket = "{";
+            string delimiterBracket = "{"/*}*/;
             size_t pos;
             string token;
 
@@ -109,16 +109,16 @@ bool dataClass::is_valid_bracket(FILE *fs, size_t * line) {
 
     for (int bracket = fgetc(fs); bracket != EOF; bracket = fgetc(fs)) {
 
-        if (bracket == '(' || bracket == '[' || bracket == '{' || bracket == ')' || bracket == ']'  || bracket == '}' ) {
-            if (bracket == '(' || bracket == '[' || bracket == '{') {
+        if (bracket == '(' /*)*/|| bracket == '[' /*]*/|| bracket == '{' /*}*/|| bracket /*(*/== ')' || bracket == /*[*/']'  || bracket ==/*{*/ '}' ) {
+            if (bracket == '('/*)*/ || bracket == '[' /*]*/|| bracket == '{'/*}*/) {
                 stack.push(bracket);
             } else {
                 if (stack.empty()) {
                     return false;
                 }
                 char top = stack.top();
-                if ((bracket == ')' && top == '(') || (bracket == ']' && top == '[') ||
-                    (bracket == '}' && top == '{')) {
+                if ((bracket ==/*(*/ ')' && top == '(' /*)*/) || (bracket ==/*[*/ ']' && top == '['/*]*/) ||
+                    (bracket ==/*{*/ '}' && top == '{'/*}*/)) {
                     stack.pop();
                 } else {
                     return false;
@@ -149,3 +149,11 @@ int main(int argc, char **argv) {
 
   return 0;
 }
+
+
+
+
+
+
+
+
