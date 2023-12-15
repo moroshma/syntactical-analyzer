@@ -32,18 +32,10 @@ private:
     int inputBaseType();
 
     void check_in_class(const string& line);
-    void check_out_class(const string& line);
-
     static string trim(const std::string &str, const std::string &chars);
     static size_t checkConst(string line, const string& nameClass);
-
-
-
-    size_t starLineType = 0;
-    size_t endLineType = 0;
-    size_t countConstructor = 0;
     size_t current_line = 0;
-    long int count_breakets = 0;
+
 
 public:
     int valid_brackets(const string &line, size_t* num_str);

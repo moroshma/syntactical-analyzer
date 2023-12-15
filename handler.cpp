@@ -36,8 +36,6 @@ int dataClass::findType(const string &file) {
 
         bool flag = false;
 
-        bool find_end_type = false;
-
         while ((getline(&line, &len, fs)) != -1) {
             if (line[strlen(line) - 1] == '\n') {
                 line[strlen(line) - 1] = '\0';
@@ -51,8 +49,7 @@ int dataClass::findType(const string &file) {
             size_t pos;
             string token;
 
-            this->count_breakets += count(s.begin(), s.end(), '{');
-            this->count_breakets -= count(s.begin(), s.end(), '}');
+
 
 
             while (newType.empty() &&
@@ -64,7 +61,6 @@ int dataClass::findType(const string &file) {
                     flag = true;
                 } else if (flag && " " != token) {
                     this->newType = token;
-                    this->starLineType = this->current_line;
                     this->baseTypeSet.insert(newType);
                     flag = false;
                     while_trigger = true;
@@ -72,13 +68,6 @@ int dataClass::findType(const string &file) {
 
                 }
                 s.erase(0, pos + delimiterSpace.length());
-            }
-
-            if (!newType.empty() && !find_end_type) {
-                this->endLineType = this->current_line;
-                if (!count_breakets) {
-                    find_end_type = true;
-                }
             }
 
             if (!newType.empty() && !while_trigger) {

@@ -51,10 +51,6 @@ void dataClass::checkValid(const string &line, size_t countConst) {
     if (string::npos == findet_open_bracket &&
         string::npos == findet_vision_bracket) {
         print_error(line, this->current_line, INVALID_BRACETS_VISION);
-    } else if (current_line > endLineType) {
-
-        check_out_class(line);
-
     } else {
         if (countConst != 1 && line.find("(") >  line.find(this -> newType)) {
             print_error(line, this->current_line, MANY_CONST);
@@ -73,7 +69,7 @@ void dataClass::check_in_class(const string &line) {
 
     bool trigger_args = false;
 
-    while (trim(s," ") != "" && trim(s," ").find(':') != 0){
+    while (trim(s," ") != "" && trim(s," ").find(':') != 0 && trim(s," ").find(';') != 0){
 
         pos = min(s.find(')'), s.find(','));
 
@@ -86,76 +82,6 @@ void dataClass::check_in_class(const string &line) {
                 print_error(line, this->current_line, INVALID_VARIBLE_INIT);
                 return;
             }
-
-            size_t end_init = min(s.find(")"), s.find(","));
-            string new_var = trim(s.substr(0, end_init), " ,){");
-
-            if (new_var.empty()) {
-                print_error(line, this->current_line, INVALID_VARIBLE_INIT);
-                break;
-            } else {
-                name_var.insert(new_var);
-                trigger_args = true;
-            }
-            s.erase(0, end_init + 1);
-        }
-    }
-
-
-    auto find_close_bracket =  s.find(')');
-    if (!trigger_args && find_close_bracket == string::npos ) {
-        print_error(line, this->current_line, INVALID_BRACETS_VISION);
-        return;
-    } else if (!trigger_args && !baseTypeSet.count(s.substr(0, s.find(' '))) ) {
-        print_error(line, this->current_line, INVALID_VARIBLE_INIT);
-        return;
-    }
-
-
-    size_t find_list_init = s.find(':');
-    if (find_list_init != string::npos) {
-        s.erase(0, find_list_init + 1);
-        while (!s.empty()) {
-
-            size_t start_brackets = s.find('{');
-            size_t end_brackets = s.find('}');
-
-            if (start_brackets != string::npos && end_brackets != string::npos) {
-                string st_cut_bracket = trim(s.substr(0, start_brackets), " ");
-                if (start_brackets > end_brackets || st_cut_bracket.empty()) {
-                    print_error(line, current_line, INITIALIZATION_LIST_ERROR);
-                    break;
-                } else {
-                    string type =
-                            s.substr(start_brackets + 1, end_brackets - start_brackets - 1);
-                    if (!name_var.count(trim(type, " "))) {
-                        print_error(line, current_line, INITIALIZATION_LIST_ERROR);
-                        break;
-                    }
-                }
-                s.erase(0, end_brackets + 1);
-            } else {
-                break;
-            }
-        }
-    }
-}
-
-void dataClass::check_out_class(const string &line) {
-    size_t pos;
-    string token;
-    string s = line.substr(line.find('(') + 1);
-
-    set<string> name_var;
-
-    bool trigger_args = false;
-
-    for (auto ik = baseTypeSet.begin(); ik != baseTypeSet.end(); ++ik) {
-        string delim = *ik;
-        pos = s.find(delim);
-        if (pos != string::npos) {
-            token = s.substr(0, pos);
-            s.erase(0, pos + delim.length());
 
             size_t end_init = min(s.find(")"), s.find(","));
             string new_var = trim(s.substr(0, end_init), " ,){");
